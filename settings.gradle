@@ -1,0 +1,3 @@
+
+rootProject.name = "YunShang_Reminder"
+include ':app'

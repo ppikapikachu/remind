@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/all_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/repeate_once"
+        style="@style/repeate_row"
+        android:background="@drawable/repeate">
+
+        <ImageView
+            android:id="@+id/repeate_once_ima"
+            style="@style/repeate_row_image"
+            android:src="@drawable/cycle_check" />
+
+        <TextView
+            style="@style/repeate_row_text"
+            android:text="只响一次" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/repeate_everaDay"
+        style="@style/repeate_row"
+        android:background="@drawable/repeate">
+
+        <ImageView
+            android:id="@+id/repeate_everaDay_ima"
+            style="@style/repeate_row_image"
+            android:src="@drawable/cycle_check" />
+
+        <TextView
+            style="@style/repeate_row_text"
+            android:text="每天" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/repeate_customize"
+        style="@style/repeate_row"
+        android:background="@drawable/repeate">
+
+        <ImageView
+            android:id="@+id/repeate_customize_ima"
+            style="@style/repeate_row_image"
+            android:src="@drawable/cycle_check" />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="16">
+
+            <TextView
+                style="@style/repeate_row_text_customize"
+                android:text="自定义" />
+
+            <TextView
+                android:id="@+id/repeate_customize_text"
+                style="@style/repeate_row_text_customize"
+                android:textStyle="italic"
+                android:layout_alignParentRight="true"
+                android:text="自定义" />
+
+        </RelativeLayout>
+
+        <ImageView
+            style="@style/repeate_row_image"
+            android:src="@drawable/personal_item_arrow" />
+    </LinearLayout>
+</LinearLayout>

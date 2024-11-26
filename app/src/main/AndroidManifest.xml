@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.yunshang.yunshang_reminder">
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.YunShang_Reminder">
+        <activity
+            android:name=".activity.AddClock"
+            android:exported="false" />
+        <!-- 声明Service -->
+        <!-- <service -->
+        <!-- android:name=".service.NotificationService" -->
+        <!-- android:enabled="true" -->
+        <!-- android:exported="false"> -->
+        <!-- &lt;!&ndash; 如果你的服务需要处理来自其他应用的隐式Intent，你可以在这里添加<intent-filter> &ndash;&gt; -->
+        <!-- &lt;!&ndash; 例如：  &ndash;&gt; -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="com.yunshang.yunshang_reminder.clock" /> -->
+        <!-- </intent-filter> -->
+        <!-- </service> -->
+        <!-- <receiver android:name="com.yunshang.yunshang_reminder.clock.LoongggAlarmReceiver" -->
+        <!-- android:exported="true" android:enabled="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="com.yunshang.yunshang_reminder.clock"/> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
+        <activity
+            android:name=".clock.ClockAlarmActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.RepeateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
