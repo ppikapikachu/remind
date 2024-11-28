@@ -11,11 +11,12 @@ public class EventRemind {
     private ArrayList<Integer> customizeId;//自定义时的选择天数
     private String title;//事件名
     private String msg;//事件描述
+    private Integer soundOrBoth;//响铃或加上震动
 
     public EventRemind() {
     }
 
-    public EventRemind(String id, Integer repeateId, String createTime, String startTime, Integer status, ArrayList<Integer> customizeId, String title, String msg) {
+    public EventRemind(String id, Integer repeateId, String createTime, String startTime, Integer status, ArrayList<Integer> customizeId, String title, String msg,Integer soundOrBoth) {
         this.id = id;
         this.repeateId = repeateId;
         this.createTime = createTime;
@@ -24,6 +25,16 @@ public class EventRemind {
         this.customizeId = customizeId;
         this.title = title;
         this.msg = msg;
+        this.soundOrBoth = soundOrBoth;
+    }
+
+    public EventRemind(Integer repeateId, String startTime, ArrayList<Integer> customizeId, String title, String msg,Integer soundOrBoth) {
+        this.repeateId = repeateId;
+        this.startTime = startTime;
+        this.customizeId = customizeId;
+        this.title = title;
+        this.msg = msg;
+        this.soundOrBoth = soundOrBoth;
     }
 
     public String getId() {
@@ -90,6 +101,14 @@ public class EventRemind {
         this.msg = msg;
     }
 
+    public Integer getSoundOrboth() {
+        return soundOrBoth;
+    }
+
+    public void setSoundOrboth(Integer soundOrBoth) {
+        this.soundOrBoth = soundOrBoth;
+    }
+
     @Override
     public String toString() {
         return "EventRemind{" +
@@ -101,6 +120,7 @@ public class EventRemind {
                 ", customizeId=" + customizeId +
                 ", title='" + title + '\'' +
                 ", msg='" + msg + '\'' +
+                ", soundOrBoth=" + soundOrBoth +
                 '}';
     }
 }

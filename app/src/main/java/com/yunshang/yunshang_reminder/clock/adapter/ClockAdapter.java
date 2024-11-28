@@ -2,33 +2,42 @@ package com.yunshang.yunshang_reminder.clock.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
+import com.google.common.util.concurrent.ListenableFuture;
+import com.yunshang.yunshang_reminder.MyApplication;
 import com.yunshang.yunshang_reminder.R;
+import com.yunshang.yunshang_reminder.activity.EditClock;
+import com.yunshang.yunshang_reminder.clock.WorkManagerUtil;
+import com.yunshang.yunshang_reminder.entity.EventMsg;
 import com.yunshang.yunshang_reminder.entity.EventRemind;
+import com.yunshang.yunshang_reminder.entity.SharedViewModel;
 import com.yunshang.yunshang_reminder.service.EventService;
 import com.yunshang.yunshang_reminder.service.impl.EventServiceImpl;
+import com.yunshang.yunshang_reminder.utils.ConvertUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.time.Instant;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 public class ClockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -42,6 +51,7 @@ public class ClockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         this.mContext = mContext;
         this.data = data;
     }
+
 
     @NonNull
     @Override
@@ -70,45 +80,65 @@ public class ClockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             String day = "";
             if (remind.getCustomizeId() != null) {//自定义
                 for (Integer d : remind.getCustomizeId()) {
-                    day  = day+formateWeekDay(d);
+                    day = day + ConvertUtil.formateWeekDay(d);
                 }
-            }else {//只响一次或者每天响
+            } else {//只响一次或者每天响
                 if (remind.getRepeateId() == 0)
                     day = day + "只响一次";
                 else
                     day = day + "每天";
             }
-            day = day+"| ";
-            ((MyViewHolder) holder).clock_details.setText(day+remind.getMsg());
+            day = day + "| ";
+            ((MyViewHolder) holder).clock_details.setText(day + remind.getMsg());
             ((MyViewHolder) holder).clock_status.setChecked(remind.getStatus() == 1 ? true : false);
         }
+
+//        开启状态改变
         ((MyViewHolder) holder).clock_status.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int update = eventService.update(new EventRemind(remind.getId(), null, null, null
-                        , Math.abs(remind.getStatus() - 1), null, null, null));
+                String id = null;
+                if (Math.abs(remind.getStatus()-1) == 1) {
+                    if (remind.getRepeateId() == 0) {//启用时判断一次性任务还在不在workmanager中，不在就创建新的
+                        ListenableFuture<WorkInfo> workInfoById = WorkManager.getInstance(MyApplication.getContext()).getWorkInfoById(UUID.fromString(remind.getId()));
+                        WorkInfo.State state = null;
+                        try {
+                            state = workInfoById.get().getState();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+//                        状态为终止状态，重新创建
+                        if (state == WorkInfo.State.FAILED || state == WorkInfo.State.SUCCEEDED || state == WorkInfo.State.CANCELLED) {
+                            EventRemind remindReBuild = WorkManagerUtil.setWork(0, 0, Long.valueOf(remind.getCreateTime()), Long.valueOf(remind.getStartTime()),
+                                    null, remind.getTitle(), remind.getMsg(), remind.getSoundOrboth());
+                            id = String.valueOf(remindReBuild.getId());//新生成的任务的id
+
+                        }
+                    }
+                }
+//                改数据库的status，id不为空的话还会把id一起改了
+                int update = eventService.update(id,new EventRemind(remind.getId(), null, null,
+                        null, Math.abs(remind.getStatus()-1), null, null, null, null));
+                remind.setStatus(Math.abs(remind.getStatus()-1));
+                if (id!=null){
+                    remind.setId(id);//赋值新id
+                }
+                EventBus.getDefault().post(new EventMsg(4,null));
                 Log.i("update的结果：", update + "");
+                Log.i("点击后刷新item：", remind + "");
             }
         });
         //在适配器中直接给itemView设置点击事件，然后进行条目的操作。
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View view) {
-
-//                Intent intent = new Intent(mContext, PostDetail.class);
-//
-//                //发送点击条目的条目信息给下一个活动，以便获取对应位置的数据进行显示
-//                Bundle bundle = new Bundle();
-//                Posts posts1 = null;
-//                //因为用data.get(position)获取的对象没有序列化，get方法没有提供序列化，所以只能自己重新创建一次
-//                //这里bitmap是没有提供序列化的类，所以不能直接传含bitmap属性的实例化对象
-////                posts1 = new Posts(null, posts.getId(), posts.getTitle(), posts.getContext(), posts.getUpusername(), posts.getNickname(), posts.getImgpath());
-//
-//                //不再用bitmap了，所以也不需要再做手动序列化bitmap了
-//                bundle.putSerializable("listpost", posts);
-//                intent.putExtra("bundlefromadapter", bundle);
-//                mContext.startActivity(intent);
+            public boolean onLongClick(View view) {
+//                传入原值
+                new ViewModelProvider(MyApplication.getInstance()).get(SharedViewModel.class).setEventRemind(remind);
+                Intent intent = new Intent(mContext, EditClock.class);
+                mContext.startActivity(intent);
+                return false;
             }
         });
 
@@ -144,21 +174,5 @@ public class ClockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return i + "";
     }
 
-    private String formateWeekDay(int i) {
-        if (i == 1)
-            return "周一 ";
-        if (i == 2)
-            return "周二 ";
-        if (i == 3)
-            return "周三 ";
-        if (i == 4)
-            return "周四 ";
-        if (i == 5)
-            return "周五 ";
-        if (i == 6)
-            return "周六 ";
-        if (i == 7)
-            return "周日 ";
-        return "";
-    }
+
 }

@@ -32,7 +32,8 @@ public class ClockDao {
         values.put("customizeId",customizeId);
         values.put("title",event.getTitle());
         values.put("msg",event.getMsg());
-
+        values.put("soundOrBoth",event.getSoundOrboth());
+        
         long insert = db.insert("Clock",null,values);
         values.clear();
         db.close();
@@ -60,6 +61,7 @@ public class ClockDao {
             e.setCustomizeId((ArrayList<Integer>) list);
             e.setTitle(cursor.getString(cursor.getColumnIndex("title")));
             e.setMsg(cursor.getString(cursor.getColumnIndex("msg")));
+            e.setSoundOrboth(cursor.getInt(cursor.getColumnIndex("soundOrBoth")));
 
             reminds.add(e);
         }
@@ -68,9 +70,11 @@ public class ClockDao {
         return reminds;
     }
 
-    public int update(EventRemind remind){
+    public int update(String id, EventRemind remind){
         SQLiteDatabase db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
+        if (id != null)//这个id为新生成数据库没有的item时，新生成的任务id，要同步更数据库的id
+            values.put("id",id);//重新生成的任务，id也会改变，一起更新
         if (remind.getRepeateId() != null)
             values.put("repeateId",remind.getRepeateId());
         if (remind.getStartTime() != null)
@@ -85,9 +89,42 @@ public class ClockDao {
         if (remind.getTitle() != null)
             values.put("title",remind.getTitle());
         if (remind.getMsg() != null)
-            values.put("msg",remind.getMsg());
+            values.put("msg",remind.getMsg());        
+        if (remind.getSoundOrboth() != null)
+            values.put("soundOrBoth",remind.getMsg());
         int clock = db.update("Clock", values, "id = ?", new String[]{remind.getId()});
         db.close();
+        return clock;
+    }
+
+    @SuppressLint("Range")
+    public EventRemind searchById(String id){
+        SQLiteDatabase db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id",id);
+        Cursor cursor = db.rawQuery("select * from Clock where id = ?", new String[]{id});
+        if (cursor.moveToFirst() == false)
+            return null;
+        EventRemind e = new EventRemind();
+        e.setId(cursor.getString(cursor.getColumnIndex("id")));
+        e.setRepeateId(cursor.getInt(cursor.getColumnIndex("repeateId")));
+        e.setCreateTime(cursor.getString(cursor.getColumnIndex("createTime")));
+        e.setStartTime(cursor.getString(cursor.getColumnIndex("startTime")));
+        e.setStatus(cursor.getInt(cursor.getColumnIndex("status")));
+//            json转集合
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<Integer>>() {}.getType();
+        List<Integer> list = gson.fromJson(cursor.getString(cursor.getColumnIndex("customizeId")), listType);
+        e.setCustomizeId((ArrayList<Integer>) list);
+        e.setTitle(cursor.getString(cursor.getColumnIndex("title")));
+        e.setMsg(cursor.getString(cursor.getColumnIndex("msg")));
+        e.setSoundOrboth(cursor.getInt(cursor.getColumnIndex("soundOrBoth")));
+        return e;
+    }
+
+    public int delClockById(String id){
+        SQLiteDatabase db = helper.getWritableDatabase();
+        int clock = db.delete("Clock", "id = ?", new String[]{id});
         return clock;
     }
 }

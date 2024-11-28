@@ -1,19 +1,17 @@
 package com.yunshang.yunshang_reminder.clock;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 
 import android.app.Activity;
 import android.app.Service;
 import android.media.MediaPlayer;
-import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 
 import com.yunshang.yunshang_reminder.MyApplication;
 import com.yunshang.yunshang_reminder.R;
+import com.yunshang.yunshang_reminder.view.SimpleDialog;
 
 
 public class ClockAlarmActivity extends Activity {

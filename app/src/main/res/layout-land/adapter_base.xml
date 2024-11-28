@@ -3,29 +3,29 @@
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="9dp"
+    android:orientation="vertical"
     android:layout_marginTop="9dp"
-    android:orientation="vertical">
+    android:layout_marginHorizontal="9dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/item_bg"
         android:orientation="horizontal"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:background="@drawable/item_bg">
 
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/clock_content"
+            android:layout_width="400dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
+                android:orientation="horizontal"
+                >
                 <TextView
                     android:id="@+id/clock_time"
                     android:layout_width="wrap_content"
@@ -33,19 +33,18 @@
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text="8:21"
-                    android:textColor="@color/black"
                     android:textSize="30dp"
+                    android:textColor="@color/black"
                     android:textStyle="bold" />
-
                 <TextView
                     android:id="@+id/clock_title"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="我是title"
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                    android:textStyle="bold"
+                    android:textSize="15dp"/>
+                </LinearLayout>
 
             <TextView
                 android:id="@+id/clock_details"
@@ -57,15 +56,18 @@
                 android:text="我是 | 各种最新的消息。"
                 android:textSize="13dp" />
         </LinearLayout>
-
         <Switch
             android:id="@+id/clock_status"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:paddingHorizontal="10dp" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/clock_content"
+            android:layout_alignBottom="@+id/clock_content"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:paddingHorizontal="10dp"/>
+    </RelativeLayout>
 
-    <!--    <View-->
-    <!--        style="@style/horizontal_line_style"-->
-    <!--        android:layout_marginTop="7dp" />-->
+<!--    <View-->
+<!--        style="@style/horizontal_line_style"-->
+<!--        android:layout_marginTop="7dp" />-->
 </LinearLayout>

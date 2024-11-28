@@ -1,14 +1,24 @@
 package com.yunshang.yunshang_reminder.clock;
 
-import android.annotation.SuppressLint;
-import android.util.Log;
+import static android.os.Build.VERSION_CODES.O;
+import static android.os.Build.VERSION_CODES.S;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
+import com.google.common.util.concurrent.ListenableFuture;
 import com.google.gson.Gson;
 import com.yunshang.yunshang_reminder.MyApplication;
 import com.yunshang.yunshang_reminder.entity.EventRemind;
@@ -36,6 +46,7 @@ public class WorkManagerUtil {
     private static EventService eventService = new EventServiceImpl();
 
     /**
+     * @param SQL             0即不适用数据库，该条数据不用添加数据库，1即使用
      * @param flag            周期性时间间隔的标志,flag = 0 表示一次性的闹钟, flag = 1 表示每天提醒的闹钟(1天的时间间隔),flag = 2
      *                        表示按周每周提醒的闹钟（一周的周期性时间间隔）
      * @param createTime      创建时间
@@ -45,8 +56,8 @@ public class WorkManagerUtil {
      * @param msg             闹钟信息
      * @param soundOrVibrator 2表示声音和震动都执行，1表示只有铃声提醒，0表示只有震动提醒
      */
-    public static void setWork(int flag, Long createTime, Long startTime, ArrayList<Integer> customizeId, String
-            title, String msg, int soundOrVibrator) throws ExecutionException, InterruptedException {
+    public static EventRemind setWork(int SQL, int flag, Long createTime, Long startTime, ArrayList<Integer> customizeId, String
+            title, String msg, int soundOrVibrator) {
         String f ;
         WorkRequest workRequest ;
         Data input;
@@ -87,12 +98,16 @@ public class WorkManagerUtil {
                     .addTag(f)
                     .build();
         }
-
         WorkManager.getInstance(MyApplication.getContext()).enqueue(workRequest);
         @SuppressLint("RestrictedApi") String id = workRequest.getStringId();//系统分配的唯一id
+        EventRemind remind = new EventRemind(id, flag, String.valueOf(createTime),
+                String.valueOf(startTime), 1, customizeId, title, msg, soundOrVibrator);
+        if (SQL == 0)//不使用数据库，直接返回
+            return remind;
+        Long add = eventService.add(remind);//第一次创建添加闹钟status默认为开启
+        Log.i("添加数据库时的id：：",workRequest.getId() +"    "+id);
 
-        Long add = eventService.add(new EventRemind(id, flag,String.valueOf(createTime),
-                String.valueOf(startTime),1, customizeId, title, msg));//第一次创建添加闹钟status默认为开启
-        Log.i("添加数据库：：",add +"    ");
+        return remind;
     }
+
 }

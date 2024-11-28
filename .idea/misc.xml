@@ -3,15 +3,25 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidStudioProjects/YunShang/YunShang_Reminder/app/src/main/res/drawable/bg_edit.xml" value="0.125" />
         <entry key="..\:/AndroidStudioProjects/YunShang/YunShang_Reminder/app/src/main/res/drawable/dialog_bg.xml" value="0.115" />
         <entry key="..\:/AndroidStudioProjects/YunShang/YunShang_Reminder/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1235" />
+        <entry key="..\:/AndroidStudioProjects/YunShang/YunShang_Reminder/app/src/main/res/drawable/item_bg.xml" value="0.133" />
         <entry key="..\:/AndroidStudioProjects/YunShang/YunShang_Reminder/app/src/main/res/drawable/repeate.xml" value="0.1235" />
         <entry key="..\:/AndroidStudioProjects/YunShang/YunShang_Reminder/app/src/main/res/drawable/repeate_check.xml" value="0.1235" />
+        <entry key="..\:/AndroidStudioProjects/YunShang/YunShang_Reminder/app/src/main/res/layout-land/activity_addclock.xml" value="0.2" />
+        <entry key="..\:/AndroidStudioProjects/YunShang/YunShang_Reminder/app/src/main/res/layout-land/activity_clock_alarm.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/YunShang/YunShang_Reminder/app/src/main/res/layout-land/activity_edit_clock.xml" value="0.2" />
+        <entry key="..\:/AndroidStudioProjects/YunShang/YunShang_Reminder/app/src/main/res/layout-land/activity_main.xml" value="0.2" />
+        <entry key="..\:/AndroidStudioProjects/YunShang/YunShang_Reminder/app/src/main/res/layout-land/activity_repeate.xml" value="0.128" />
+        <entry key="..\:/AndroidStudioProjects/YunShang/YunShang_Reminder/app/src/main/res/layout-land/adapter_base.xml" value="0.2" />
         <entry key="..\:/AndroidStudioProjects/YunShang/YunShang_Reminder/app/src/main/res/layout/activity_addclock.xml" value="0.2" />
         <entry key="..\:/AndroidStudioProjects/YunShang/YunShang_Reminder/app/src/main/res/layout/activity_clock_alarm.xml" value="0.10364583333333334" />
+        <entry key="..\:/AndroidStudioProjects/YunShang/YunShang_Reminder/app/src/main/res/layout/activity_edit_clock.xml" value="0.2" />
         <entry key="..\:/AndroidStudioProjects/YunShang/YunShang_Reminder/app/src/main/res/layout/activity_main.xml" value="0.2390625" />
         <entry key="..\:/AndroidStudioProjects/YunShang/YunShang_Reminder/app/src/main/res/layout/activity_repeate.xml" value="0.2" />
         <entry key="..\:/AndroidStudioProjects/YunShang/YunShang_Reminder/app/src/main/res/layout/adapter_base.xml" value="0.2" />
+        <entry key="..\:/AndroidStudioProjects/YunShang/YunShang_Reminder/app/src/main/res/layout/dia_edit_clock.xml" value="0.12239583333333333" />
         <entry key="..\:/AndroidStudioProjects/YunShang/YunShang_Reminder/app/src/main/res/layout/dialog_simple.xml" value="0.16" />
         <entry key="..\:/AndroidStudioProjects/YunShang/YunShang_Reminder/app/src/main/res/layout/main_repeate.xml" value="0.16799999999999998" />
         <entry key="..\:/AndroidStudioProjects/YunShang/YunShang_Reminder/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1235" />

@@ -23,6 +23,9 @@ import com.yunshang.yunshang_reminder.entity.EventMsg;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MyNotification {
     String CHANNEL_ID = "my_high_importance_channel"; // 固定的渠道ID
     int NOTIFICATION_ID = 1; // 固定的通知ID，或者使用一个递增的整数
@@ -58,8 +61,15 @@ public class MyNotification {
                 .setVisibility(NotificationCompat.VISIBILITY_PRIVATE); // 屏幕可见性，锁屏时，显示icon和标题，内容隐藏
         mBuilder.setVibrate(new long[]{0,100, 10, 100, 10});
 
-        Intent clockIntent = new Intent(context, ClockAlarmActivity.class);
-//        clockIntent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+//        启动mainactivity
+        Intent mainIntent = new Intent(context, MainActivity.class);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        MyApplication.getContext().startActivity(mainIntent);
+
+
+
+        Intent clockIntent = new Intent(context, MainActivity.class);
+        clockIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //        clockIntent.putExtra("title",title);
 //        clockIntent.putExtra("msg", msg);
 //        clockIntent.putExtra("soundOrVibrator", soundOrVibrator);
@@ -67,9 +77,18 @@ public class MyNotification {
         sender = PendingIntent.getActivity(context, 1, clockIntent, PendingIntent.FLAG_UPDATE_CURRENT| PendingIntent.FLAG_IMMUTABLE);
         mBuilder.addAction(R.mipmap.ic_launcher,"去看看",sender);
         mBuilder.setContentIntent(sender); // 跳转配置
-        EventBus.getDefault().post(new EventMsg(10,null));
+        EventBus.getDefault().post(new EventMsg(10,null));//关闭除main外的所有activity
         ClockDiaAndSoundWithVibrator.showDialogInBroadcastReceiver(null, soundOrVibrator);
         mManager.notify(NOTIFICATION_ID, mBuilder.build());
+
+//        开启dialog
+
+        Map map = new HashMap();
+        map.put("title",title);
+        map.put("msg",msg);
+        map.put("soundOrVibrator",soundOrVibrator);
+//        发送粘性事件
+        EventBus.getDefault().postSticky(new EventMsg(0,map));
     }
 
 

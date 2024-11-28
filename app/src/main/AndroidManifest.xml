@@ -14,9 +14,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.YunShang_Reminder">
         <activity
-            android:name=".activity.AddClock"
+            android:name=".activity.EditClock"
+            android:screenOrientation="landscape"
             android:exported="false" />
-        <!-- 声明Service -->
+        <activity
+            android:name=".activity.AddClock"
+            android:screenOrientation="landscape"
+            android:exported="false" /> <!-- 声明Service -->
         <!-- <service -->
         <!-- android:name=".service.NotificationService" -->
         <!-- android:enabled="true" -->
@@ -35,13 +39,18 @@
         <!-- </receiver> -->
         <activity
             android:name=".clock.ClockAlarmActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".activity.RepeateActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".activity.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

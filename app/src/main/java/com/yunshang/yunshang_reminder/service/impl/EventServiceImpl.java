@@ -22,8 +22,18 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public int update(EventRemind remind) {
-        return dao.update(remind);
+    public int update(String id,EventRemind remind) {
+        return dao.update(id,remind);
+    }
+
+    @Override
+    public EventRemind searchById(String id) {
+        return dao.searchById(id);
+    }
+
+    @Override
+    public int delClockById(String id) {
+        return dao.delClockById(id);
     }
 
 }

@@ -17,7 +17,8 @@ public class ClockDatabaseHelper extends SQLiteOpenHelper {
             + "status integer , "
             + "customizeId text, "//存json
             + "title text, "
-            + "msg text)";
+            + "msg text, "
+            + "soundOrBoth integer)";
     public ClockDatabaseHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, "Clock.db", factory, version);
     }

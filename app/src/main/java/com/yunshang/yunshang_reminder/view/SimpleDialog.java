@@ -1,4 +1,4 @@
-package com.yunshang.yunshang_reminder.clock;
+package com.yunshang.yunshang_reminder.view;
 
 import android.app.Dialog;
 import android.content.Context;

@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.yunshang.yunshang_reminder.MyApplication;
 import com.yunshang.yunshang_reminder.R;
+import com.yunshang.yunshang_reminder.view.SimpleDialog;
 
 public class ClockDiaAndSoundWithVibrator {
 
